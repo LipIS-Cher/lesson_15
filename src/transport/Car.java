@@ -2,11 +2,13 @@ package transport;
 import java.util.Calendar;
 
 
-
-
 public class Car {
 
-    private int month;
+    private int monthNow;
+
+    private int dayNow;
+
+    private int yearNow;
     final String brand;
 
     final String model;
@@ -29,12 +31,16 @@ public class Car {
 
     public String rubber;
 
+    private Key key;
+
+    private Insurance insurance;
+
     Calendar calendar = Calendar.getInstance();
 
 
 
     public Car(String brand, String model, float engineVolume, String color, int year, String country, String gearBox, String typeBox, String numberCar, int numberOfSeats) {
-        month = calendar.get(Calendar.MONTH);
+        monthNow = calendar.get(Calendar.MONTH);
         if (brand == null){
             this.brand = "default";
         } else {
@@ -85,7 +91,7 @@ public class Car {
         } else {
             this.numberOfSeats = numberOfSeats;
         }
-        if ((month >= 1 && month <= 3) || (month >= 10 && month <= 12)){
+        if ((monthNow >= 1 && monthNow <= 3) || (monthNow >= 10 && monthNow <= 12)){
             this.rubber = "зимняя";
         } else {
             this.rubber = "летняя";
@@ -125,6 +131,116 @@ public class Car {
         }
     }
 
+
+    public class Key {
+        private boolean remoteStart;
+
+        private boolean notKeyAccess;
+
+        public Key(boolean remoteStart, boolean notKeyAccess) {
+            this.remoteStart = remoteStart;
+            this.notKeyAccess = notKeyAccess;
+        }
+
+        public boolean isRemoteStart() {
+            return remoteStart;
+        }
+
+        public boolean isNotKeyAccess() {
+            return notKeyAccess;
+        }
+
+        public void setRemoteStart(boolean remoteStart) {
+            this.remoteStart = remoteStart;
+        }
+
+        public void setNotKeyAccess(boolean notKeyAccess) {
+            this.notKeyAccess = notKeyAccess;
+        }
+    }
+
+    public class Insurance {
+        private int dateActions;
+        private int monthActions;
+        private int yearActions;
+
+        private int cost;
+
+        private String number;
+
+        public Insurance(int dateActions, int monthActions, int yearActions, int cost, String number) {
+            this.dateActions = dateActions;
+            this.monthActions = monthActions;
+            this.yearActions = yearActions;
+            if (cost == 0){
+                this.cost = 10000;
+            } else {
+                this.cost = cost;
+            }
+            if (number.length() == 9){
+                this.number = number;
+            } else {
+                this.number = "Error";
+            }
+        }
+
+        public String checkTerm(int dateActions, int monthActions, int yearActions){
+            dayNow = calendar.get(Calendar.DATE);
+            monthNow = calendar.get(Calendar.MONTH);
+            yearNow = calendar.get(Calendar.YEAR);
+
+            int dateRes = dateActions - dayNow;
+            int monthRes = monthActions - monthNow;
+            int yearRes = yearActions - yearNow;
+            String result;
+            if ((dateRes + monthRes * 30 + yearRes * 365) < 0){
+                result = "бегом оформлять страховку, ";
+            } else {
+                result = "";
+            }
+            return result;
+        }
+
+        public int getDateActions() {
+            return dateActions;
+        }
+
+        public void setDateActions(int dateActions) {
+            this.dateActions = dateActions;
+        }
+
+        public int getMonthActions() {
+            return monthActions;
+        }
+
+        public void setMonthActions(int monthActions) {
+            this.monthActions = monthActions;
+        }
+
+        public int getYearActions() {
+            return yearActions;
+        }
+
+        public void setYearActions(int yearActions) {
+            this.yearActions = yearActions;
+        }
+
+        public int getCost() {
+            return cost;
+        }
+
+        public void setCost(int cost) {
+            this.cost = cost;
+        }
+
+        public String getNumber() {
+            return number;
+        }
+
+        public void setNumber(String number) {
+            this.number = number;
+        }
+    }
 
     @Override
     public String toString() {
@@ -190,4 +306,20 @@ public class Car {
     }
 
     public void setRubber(String rubber) { this.rubber = rubber; }
+
+    public Key getKey() {
+        return key;
+    }
+
+    public void setKey(Key key) {
+        this.key = key;
+    }
+
+    public Insurance getInsurance() {
+        return insurance;
+    }
+
+    public void setInsurance(Insurance insurance) {
+        this.insurance = insurance;
+    }
 }
